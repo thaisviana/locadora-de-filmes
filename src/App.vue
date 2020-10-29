@@ -57,10 +57,11 @@
           </b-card>
         </div>
       </b-row>
-      <b-row v-show="! mostrarFilmes">
+      <b-row v-show="!mostrarFilmes">
         <b-row class="table">
           <h2> Resumo de pedido</h2>
           <b-table block striped hover dark responsive head-variant="light" :items="carrinho" :fields="fields"></b-table>
+          <b-row> <p>Total : R${{ somaPedido}},00</p></b-row>
         </b-row>
       </b-row>
     </b-container>
@@ -83,7 +84,7 @@ export default {
       title: "Locadora de Filmes",
       horas: new Date().getHours(),
       carrinho: [],
-      fields: ['titulo', 'valor', 'quantidade'],
+      fields: ['titulo', 'preço', 'quantidade'],
       mostrarFilmes: true,
       filmes: [
         {
@@ -149,7 +150,14 @@ export default {
     },
     adicionarAoCarrinho: function (filme) {
       if (filme.estoqueDisponivel > 0) {
-        this.carrinho.push(filme)
+        let indexFilme = this.carrinho.findIndex((obj) => obj.id == filme.id);   
+        filme.quantidade = (filme.quantidade || 0) +1
+        if(indexFilme == -1){
+          filme.preço = `R$${filme.valor},00`
+          this.carrinho.push(filme)
+        }else{
+          this.carrinho.splice(indexFilme, 1, filme)
+        }
         filme.estoqueDisponivel -= 1;
       }  
     },
@@ -158,6 +166,11 @@ export default {
     quantidadeNoCarrinho: function () {
       return this.carrinho.length;
     },
+    somaPedido: function(){
+      return this.carrinho.reduce(function (accumulator, filme) {
+          return accumulator + (filme.valor * filme.quantidade)
+      }, 0)
+    }
   },
 };
 </script>
