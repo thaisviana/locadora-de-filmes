@@ -37,7 +37,7 @@
 
             <b-card-text>
               <b-icon icon="star-fill" variant="warning" v-for="estrelas in filme.avaliacao" :key="estrelas"></b-icon>
-              <b-icon icon="star" variant="warning" v-for="estrelas_vazadas in 5 - filme.avaliacao" :key="estrelas_vazadas"></b-icon>
+              <b-icon icon="star" variant="warning" v-for="estrelas_vazadas in 5 - filme.avaliacao" :key="'star'+estrelas_vazadas"></b-icon>
             </b-card-text>
             <b-button
               v-if="filme.estoqueDisponivel > 1"
@@ -62,162 +62,8 @@
         </div>
       </b-row>
       <b-row v-show="!mostrarFilmes">
-        <b-row class="table">
-          <h2>Resumo de pedido</h2>
-          <b-table
-            block
-            striped
-            hover
-            dark
-            responsive
-            head-variant="light"
-            :items="carrinho"
-            :fields="fields"
-          ></b-table>
-          <b-row>
-            <p>Total : R${{ somaPedido }},00</p></b-row
-          >
-        </b-row>
-          <b-row class="pedido">
-            <h3>Dados de Pagamento</h3>
-          </b-row>
-          <b-row class="pedido">
-            <form>
-              <div class="form-group">
-                <label for="pedido.primeiroNome">Primeiro nome</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="primeiroNome"
-                  placeholder="Digita o primeiro nome"
-                  v-model.trim.lazy="pedido.primeiroNome"
-                />
-              </div>
-              <div class="form-group">
-                <label for="ultimoNome">Último nome</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="ultimoNome"
-                  placeholder="Digite o último nome"
-                  v-model.trim.lazy="pedido.ultimoNome"
-                />
-              </div>
-              <div class="form-group">
-                <label for="endereco">Endereço</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="endereco"
-                  placeholder="Digita o endereço"
-                  v-model.trim.lazy="pedido.endereco"
-                />
-              </div>
-              <div class="form-group">
-                <label for="cidade">Cidade</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="cidade"
-                  placeholder="Digita a cidade"
-                  v-model.trim.lazy="pedido.cidade"
-                />
-              </div>
-              <div class="form-group">
-                <label for="estado">Estado</label>
-                <select
-                  class="form-control"
-                  id="estado"
-                  v-model="pedido.estado"
-                >
-                  <option disabled value>Escolha um estado</option>
-                  <option
-                    v-for="(estado, key) in estados"
-                    v-bind:value="estado"
-                    v-bind:key="key"
-                  >
-                    {{ estado }}
-                  </option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="cep">CEP</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="cep"
-                  placeholder="Digita o CEP"
-                  v-model.number="pedido.cep"
-                />
-              </div>
-              <div class="form-group form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="pagoNaEntrega"
-                  v-bind:true-value="pedido.simNaEntrega"
-                  v-bind:false-value="pedido.naoNaEntrega"
-                  v-model="pedido.pagoNaEntrega"
-                />
-                <label class="form-check-label" for="pagoNaEntrega"
-                  >Pago na entrega?</label
-                >
-              </div>
-              <div class="form-group form-check-inline">
-                <input
-                  type="radio"
-                  class="form-check-input"
-                  id="manha"
-                  value="Manhã"
-                  v-model="pedido.entrega"
-                />
-                <label class="form-check-label" for="manha">Manhã</label>
-              </div>
-              <div class="form-group form-check-inline">
-                <input
-                  type="radio"
-                  class="form-check-input"
-                  id="tarde"
-                  value="Tarde"
-                  v-model="pedido.entrega"
-                />
-                <label class="form-check-label" for="tarde">Tarde</label>
-              </div>
-              <div class="form-group form-check-inline">
-                <input
-                  type="radio"
-                  class="form-check-input"
-                  id="noite"
-                  value="Noite"
-                  v-model="pedido.entrega"
-                />
-                <label class="form-check-label" for="noite">Noite</label>
-              </div>
-
-              <div class="form-group">
-                <button
-                  type="submit"
-                  class="btn btn-block btn-dark"
-                  v-on:click="submitFormulario"
-                >
-                  Finalizar pedido
-                </button>
-              </div>
-            </form>
-          </b-row>
-          <b-row class="pedido">
-            <pre>
-          Primeiro nome: {{ pedido.primeiroNome }}
-          Último nome: {{ pedido.ultimoNome }}
-          Endereço: {{ pedido.endereco }}
-          Cidade: {{ pedido.cidade }}
-          Estado: {{ pedido.estado }}
-          CEP: {{ pedido.cep }}
-          Pago na entrega?: {{ pedido.pagoNaEntrega }}
-          Entrega: {{ pedido.entrega }}
-        </pre
-            >
-          </b-row>
+          <ResumoPedido :carrinho="carrinho" />
+          <DadosForm />
         </b-row>
     </b-container>
   </div>
@@ -228,37 +74,22 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 import HelloWorld from "./components/HelloWorld.vue";
+import DadosForm from "./components/DadosForm.vue";
+import ResumoPedido from "./components/ResumoPedido.vue";
 
 export default {
   name: "App",
   components: {
     HelloWorld,
+    DadosForm,
+    ResumoPedido,
   },
   data() {
     return {
       title: "Locadora de Filmes",
       horas: new Date().getHours(),
       carrinho: [],
-      fields: ["titulo", "preço", "quantidade"],
       mostrarFilmes: true,
-      pedido: {
-        primeiroNome: "",
-        ultimoNome: "",
-        endereco: "",
-        cidade: "",
-        estado: "",
-        cep: "",
-        pagoNaEntrega: "Não",
-        simNaEntrega: "Sim",
-        naoNaEntrega: "Não",
-        entrega: "Manhã",
-      },
-      estados: {
-        RJ: "Rio de Janeiro",
-        MG: "Minas Gerais",
-        SP: "São Paulo",
-        ES: "Espírito Santo",
-      },
       filmes: [
         {
           id: 1,
@@ -318,9 +149,6 @@ export default {
     };
   },
   methods: {
-    submitFormulario() {
-      alert("Pedido finalizado");
-    },
     parteDoDia() {
       if (this.horas < 12) {
         return "Está de dia!";
@@ -348,11 +176,7 @@ export default {
     quantidadeNoCarrinho: function () {
       return this.carrinho.length;
     },
-    somaPedido: function () {
-      return this.carrinho.reduce(function (accumulator, filme) {
-        return accumulator + filme.valor * filme.quantidade;
-      }, 0);
-    },
+    
   },
 };
 </script>
