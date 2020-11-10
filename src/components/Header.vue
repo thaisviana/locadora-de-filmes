@@ -5,9 +5,6 @@
 <script>
 export default {
   name: 'Header',
-  props: {
-    mostrarFilmes: Boolean
-  }
 }
 </script>
 
