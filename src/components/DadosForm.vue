@@ -1,4 +1,8 @@
 <template>
+<b-container>
+  <b-row>
+ <ResumoPedido :carrinho="carrinho" />
+ </b-row>
   <b-row>
     <b-row class="pedido">
       <h3>Dados de Pagamento</h3>
@@ -137,11 +141,19 @@
       >
     </b-row>
   </b-row>
+
+</b-container>
 </template>
 
 <script>
+
+import ResumoPedido from './ResumoPedido'
+
 export default {
   name: "DadosForm",
+  components:{
+    ResumoPedido
+  },
   data() {
     return {
       pedido: {
@@ -162,6 +174,7 @@ export default {
         SP: "São Paulo",
         ES: "Espírito Santo",
       },
+      carrinho : []
     };
   },
   methods: {
