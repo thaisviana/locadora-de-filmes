@@ -1,11 +1,6 @@
 <template>
   <div>
-    <b-navbar type="dark" variant="dark">
-      <b-navbar-nav>
-        <b-nav-item @click="mostrarFilmes = true">Home</b-nav-item>
-        <b-nav-item @click="mostrarFilmes = false">Carrinho</b-nav-item>
-      </b-navbar-nav>
-    </b-navbar>
+    <Header :controla_aba="controla_aba"/>
     <b-container>
       <b-row>
         <h1>{{ title }}</h1>
@@ -31,13 +26,15 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import DadosForm from "./components/DadosForm.vue";
 import ResumoPedido from "./components/ResumoPedido.vue";
 import ListarFilmes from "./components/ListarFilmes.vue";
+import Header from "./components/Header.vue";
 
 export default {
   name: "App",
   components: {
     DadosForm,
     ResumoPedido,
-    ListarFilmes
+    ListarFilmes,
+    Header
   },
   data() {
     return {
@@ -48,6 +45,9 @@ export default {
     };
   },
   methods: {
+    controla_aba(valor){
+      this.mostrarFilmes=valor
+    },
     parteDoDia() {
       if (this.horas < 12) {
         return "Está de dia!";
@@ -61,7 +61,7 @@ export default {
   computed: {
     quantidadeNoCarrinho: function () {
       return this.carrinho.length;
-    },
+    }
     
   },
 };
