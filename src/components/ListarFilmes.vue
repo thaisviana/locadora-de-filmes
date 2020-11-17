@@ -13,7 +13,7 @@
             class="mb-3 text-center"
           >
             <b-card-text>
-              {{ filme.descricao }}
+              <router-link tag="p" :to="{name : 'filme', params : {id : filme.id , filme: filme}}">{{ filme.descricao }}</router-link>
             </b-card-text>
             <b-card-text> R$ {{ filme.valor }},00 </b-card-text>
 

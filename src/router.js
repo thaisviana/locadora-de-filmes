@@ -1,6 +1,8 @@
 import VueRouter from 'vue-router';
 import DadosForm from './components/DadosForm';
 import Home from './components/Home';
+import HelloWorld from './components/HelloWorld';
+import Filme from './components/Filme';
  
  
 export default new VueRouter({
@@ -15,6 +17,16 @@ export default new VueRouter({
             path: '/form',
             name: 'form',
             component: DadosForm
+        },
+        {
+            path: '/hello',
+            name: 'hello',
+            component: HelloWorld
+        },
+        {
+            path: '/filme/:id',
+            name: 'filme',
+            component: Filme
         },
     ]
 });
